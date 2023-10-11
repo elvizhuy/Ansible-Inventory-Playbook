@@ -1,7 +1,7 @@
----
-- name: Create Folder
-  hosts: all
-  tasks:
-    - name: make Folder
-      apt:
+-
+    name: Create Folder
+      hosts: all
+      tasks:
+        - name: make Folder
+          apt:
       
