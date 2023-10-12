@@ -3,9 +3,9 @@
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
-    mode : 0777
+    mode : 0775
   loop:
     - /home/isofh
-    - /etc
+    - /home/isofh/test
 
       
