@@ -1,5 +1,5 @@
 - name: Create Folder
-  ansible.builtin.file:
+  file:
     path: "{{ item }}"
     state: directory
     mode : 0775
