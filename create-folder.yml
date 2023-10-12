@@ -1,7 +1,10 @@
 ---
 - name: Create Folder
-  hosts: all
-  tasks:
-    - name: make Folder
-      apt:
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode : 0777
+  loop:
+    - /home/isofh
+    - /etc
       
