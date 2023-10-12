@@ -1,7 +1,4 @@
-
 - name: Create Folder
-  host:
-    servers:
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
