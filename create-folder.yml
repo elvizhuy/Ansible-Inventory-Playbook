@@ -8,7 +8,7 @@
         state: directory
         mode : '0755'
       loop:
-        - /home/
-        - /home/isofh/
+        - /home/isofh/my_directory_1
+        - /home/isofh/my_directory_2
 
       
