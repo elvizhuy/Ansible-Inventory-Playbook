@@ -1,4 +1,4 @@
----
+
 - name: Create Folder
   ansible.builtin.file:
     path: "{{ item }}"
@@ -7,4 +7,5 @@
   loop:
     - /home/isofh
     - /etc
+
       
