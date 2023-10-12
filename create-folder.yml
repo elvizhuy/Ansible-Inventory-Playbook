@@ -1,6 +1,7 @@
 ---
 - name: Create Folder
-  hosts: Servers
+  hosts:
+    servers:
   tasks:
     - name: create dir task
       file:
