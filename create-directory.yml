@@ -1,0 +1,14 @@
+---
+- name: Create Folder
+  hosts: servers
+  tasks:
+    - name: create dir task
+      file:
+        path: "{{ item }}"
+        state: directory
+        mode : '0755'
+      loop:
+        - /home/isofh/my_directory_1
+        - /home/isofh/my_directory_2
+
+      
