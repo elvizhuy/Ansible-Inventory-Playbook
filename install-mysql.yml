@@ -1,0 +1,34 @@
+---
+- name: Install Mysql
+  hosts: database_slave
+  tasks:
+    - name: install new MYSQL database
+      apt:
+          service: "{{ item }}"
+          state: installed
+      loop:
+          - mysql-server
+          - mysql-client
+
+    - name: start MYSQL service
+      service:
+          name: mysql
+          state: started
+          enable: yes
+
+    - name: create database
+      mysql_db:
+          name: "{{ database_name }}"
+          state: present
+      vars:
+          database_name: test_db
+
+    - name: create DB user
+      mysql_user:
+          name: "{{ username }}"
+          password: "{{ password }}"
+          priv: '*.*:ALL'
+          state: present
+      vars:
+          username: 'Huynn'
+          password: '123123'
