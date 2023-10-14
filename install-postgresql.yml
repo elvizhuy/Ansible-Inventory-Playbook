@@ -25,8 +25,12 @@
       - name: "Install packages"
         dnf: "name={{ item }} state=present"
         with_items:
-          - postgresql
-          - postgresql-server
+          - postgresql14
+          - postgresql14-server
+          - postgresql14-contrib
+          - postgresql14-devel
+          - postgresql14-libs
+
 
       - name: "Install Python packages"
         pip: "name={{ item }}  state=present"
@@ -40,13 +44,13 @@
         register: postgres_data
 
       - name: "Initialize PostgreSQL"
-        shell: "postgresql-setup initdb"
+        shell: "postgresql-14-setup initdb"
         when: not postgres_data.stat.exists
 
       - name: "Start and enable services"
         service: "name={{ item }} state=started enabled=yes"
         with_items:
-          - postgresql
+          - postgresql-14
 
 
 #==================================== Create database,user ====================================
@@ -84,6 +88,11 @@
           method: md5
           users: "{{ postgresql_user }}"
           create: true
+        blockinfile:
+               dest: "/var/lib/pgsql/14/data/pg_hba.conf"
+               insertafter: "# TYPE  DATABASE        USER            ADDRESS                 METHOD"
+               block: |
+                 host   all             all                trust
         become: yes
         become_user: postgres
         notify: restart postgres
