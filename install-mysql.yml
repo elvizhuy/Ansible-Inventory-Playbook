@@ -2,6 +2,7 @@
 - name: Install & Secure Mysql
   hosts: database_slave
   become: yes
+  gather_facts: true
 #  module_defaults:
 #      mysql:
 #        login_unix_socket: /var/run/mysqld/mysqld.sock
