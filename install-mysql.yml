@@ -124,22 +124,22 @@
           - "::1"
           - "localhost"
 
-    - name: Copy .my.cnf file with root password credentials
-      template:
-           src: templates/.my.cnf
-           dest: /etc/mysql/my.cnf
-           owner: root
-           mode: 0600
-
-    - name: Update mysql root password for all root accounts
-      mysql_user:
-           name: root
-           host: "{{ item }}"
-           password: "{{ mysql_root_password }}"
-      loop:
-          - 127.0.0.1
-          - ::1
-          - localhost
+#    - name: Copy .my.cnf file with root password credentials
+#      template:
+#           src: templates/.my.cnf
+#           dest: /etc/mysql/my.cnf
+#           owner: root
+#           mode: 0600
+#
+#    - name: Update mysql root password for all root accounts
+#      mysql_user:
+#           name: root
+#           host: "{{ item }}"
+#           password: "{{ mysql_root_password }}"
+#      loop:
+#          - 127.0.0.1
+#          - ::1
+#          - localhost
 
 #================================================ MIGRATE ====================================================
     - name: Ensure the database exists
