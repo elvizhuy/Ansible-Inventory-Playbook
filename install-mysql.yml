@@ -47,7 +47,6 @@
     - name: Check if MySQL user exists
       mysql_user:
            name: "{{ mysql_user }}"
-           host: '%'
            login_user: root
            login_password: "{{ mysql_root_password }}"
       register: mysql_user_check
@@ -57,11 +56,11 @@
       mysql_user:
            name: "{{ mysql_user }}"
            password: "{{ mysql_password }}"
-           priv: '*.*:ALL,GRANT'
-           host: '%'
+           priv: "*.*:ALL,GRANT"
+           host: "%"
            append_privs: yes
            login_user: root
-           login_password: "{{mysql_root_password}}"
+           login_password: "{{ mysql_root_password }}"
            state: present
       when: mysql_user_check.failed
 
