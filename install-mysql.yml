@@ -12,13 +12,13 @@
   tasks:
     - name: Update apt cache
       apt:
-         update_cache: yes
+          update_cache: yes
 
     - name: install new MYSQL database
       package:
-         name: "{{item}}"
-         state: present
-         update_cache: yes
+           name: "{{item}}"
+           state: present
+           update_cache: yes
       loop:
          - mysql-server
          - mysql-client
@@ -36,33 +36,33 @@
     - name: Set root user password
       become: yes
       mysql_user:
-        name: root
-        password: "{{mysql_root_password}}"
-        login_unix_socket: /var/run/mysqld/mysqld.sock
-        host: localhost
-        login_user: root
-        login_password: "{{ mysql_root_password }}"
-        state: present
+           name: root
+           password: "{{mysql_root_password}}"
+           login_unix_socket: /var/run/mysqld/mysqld.sock
+           host: localhost
+           login_user: root
+           login_password: "{{ mysql_root_password }}"
+           state: present
 
     - name: Check if MySQL user exists
       mysql_user:
-        name: "{{ mysql_user }}"
-        host: '%'
-        login_user: root
-        login_password: "{{ mysql_root_password }}"
+           name: "{{ mysql_user }}"
+           host: '%'
+           login_user: root
+           login_password: "{{ mysql_root_password }}"
       register: mysql_user_check
       ignore_errors: yes
 
     - name: create DB user if not exists
       mysql_user:
-          name: "{{ mysql_user }}"
-          password: "{{ mysql_password }}"
-          priv: '*.*:ALL,GRANT'
-          host: '%'
-          append_privs: yes
-          login_user: root
-          login_password: "{{mysql_root_password}}"
-          state: present
+           name: "{{ mysql_user }}"
+           password: "{{ mysql_password }}"
+           priv: '*.*:ALL,GRANT'
+           host: '%'
+           append_privs: yes
+           login_user: root
+           login_password: "{{mysql_root_password}}"
+           state: present
       when: mysql_user_check.failed
 
     - name: Remove the test database
@@ -74,26 +74,26 @@
 
     - name: Check if MySQL database exists
       mysql_db:
-        name: "{{ mysql_db_name }}"
-        login_user: root
-        login_password: "{{ mysql_root_password }}"
+           name: "{{ mysql_db_name }}"
+           login_user: root
+           login_password: "{{ mysql_root_password }}"
       register: mysql_db_check
       ignore_errors: yes
 
     - name: create database if not exists
       mysql_db:
-          name: "{{ mysql_db_name }}"
-          login_user: root
-          login_password: "{{mysql_root_password}}"
-          state: present
+           name: "{{ mysql_db_name }}"
+           login_user: root
+           login_password: "{{mysql_root_password}}"
+           state: present
       when: mysql_db_check.failed
 
     - name: Enable remote login to mysql
       lineinfile:
-          path: /etc/mysql/mysql.conf.d/mysqld.cnf
-          regex: '^bind-address\s*=\s*127.0.0.1'
-          line: 'bind-address = 0.0.0.0'
-          backup: yes
+           path: /etc/mysql/mysql.conf.d/mysqld.cnf
+           regex: '^bind-address\s*=\s*127.0.0.1'
+           line: 'bind-address = 0.0.0.0'
+           backup: yes
       notify:
           - Restart mysql
 
@@ -132,18 +132,18 @@
 #================================================ MIGRATE ====================================================
     - name: Ensure the database exists
       mysql_db:
-        name: "{{ mysql_db_name }}"
-        state: present
+           name: "{{ mysql_db_name }}"
+           state: present
       register: database_check
 
     - name: Run Database Migration Script
       shell: /var/lib/jenkins/workspace/Ansible-Inventory-Playbook/migration_script.sh
       args:
-        executable: /bin/bash
+          executable: /bin/bash
       when: database_check.changed
 
   handlers:
     - name: Restart mysql
       service:
-          name: mysql
-          state: restarted
+           name: mysql
+           state: restarted
