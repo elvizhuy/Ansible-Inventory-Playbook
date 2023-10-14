@@ -137,7 +137,7 @@
       register: database_check
 
     - name: Run Database Migration Script
-      shell: /var/lib/jenkins/workspace/ Ansible-Inventory-Playbook/migration_script.sh
+      shell: /var/lib/jenkins/workspace/Ansible-Inventory-Playbook/migration_script.sh
       args:
         executable: /bin/bash
       when: database_check.changed
