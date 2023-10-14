@@ -54,7 +54,7 @@
            login_unix_socket: /var/run/mysqld/mysqld.sock
            host: localhost
            login_user: root
-           login_password: "123123"
+           login_password: "{{mysql_root_password}}"
            state: present
 
     - name: Check if MySQL user exists
