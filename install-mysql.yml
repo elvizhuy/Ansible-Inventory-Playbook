@@ -113,7 +113,12 @@
         MYSQL_PWD: "{{ mysql_root_password }}"
 
     - name: Ensure anonymous users are not in the database
-      mysql_user: user='' host=$item state=absent
+      mysql_user:
+          login_user: root
+          login_password: "{{mysql_root_password}}"
+          user: ''
+          host: $item
+          state: absent
       with_items:
           - 127.0.0.1
           - ::1
