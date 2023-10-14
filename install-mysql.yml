@@ -160,6 +160,8 @@
       mysql_db:
            name: "{{ mysql_databases }}"
            state: present
+           login_user: root
+           login_password: "{{mysql_root_password}}"
       register: database_check
 
     - name: Run Database Migration Script
