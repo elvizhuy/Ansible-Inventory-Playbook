@@ -30,11 +30,9 @@
       action: service name=mysql state=started
 
     - name: Get root user info
-      mysql_user_info:
-        name: root
-        login_user: root
-        login_password: "{{ mysql_root_password }}"
+      command: "mysql -u root -p -e 'SELECT Password FROM mysql.user WHERE User = \"root\";'"
       register: root_user_info
+      ignore_errors: yes
 
     - name: Display current root user password
       debug:
@@ -42,7 +40,8 @@
 
     - name: Set root user password in a variable
       set_fact:
-        root_password_variable: "{{ root_user_info.stdout.password }}"
+        root_password_variable: "{{ root_user_info.stdout.stdout_lines[1] }}"
+      when: mysql_user_info.rc == 0
 
     - name: Set root user password
       become: yes
