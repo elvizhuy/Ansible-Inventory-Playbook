@@ -12,8 +12,10 @@
     - name: install new MYSQL database
       action: apt pkg=$item state=present
       with_items:
-          - pip
-          - python3-dev
+          - mysql-server-core-5.5
+          - mysql-client-core-5.5
+          - libmysqlclient-dev
+          - python-mysqldb
           - mysql-server
           - mysql-client
 
