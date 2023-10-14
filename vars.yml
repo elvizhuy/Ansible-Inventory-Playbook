@@ -11,6 +11,6 @@ mysql_user: huynn
 #    host: "%"
 #    password: 123123
 #    priv: "huynn.*:ALL"
-mysql_password: "HuyNgNg@9890#!"
+mysql_password: "Huynn@9890#!"
 password_validation_policy: 1
 database_service_to_remove : postgresql
