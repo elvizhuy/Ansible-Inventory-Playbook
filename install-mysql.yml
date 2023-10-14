@@ -10,14 +10,17 @@
 
   tasks:
     - name: install new MYSQL database
-      action: apt pkg=$item state=present
-      with_items:
-          - mysql-server-core-5.5
-          - mysql-client-core-5.5
-          - libmysqlclient-dev
-          - python-mysqldb
-          - mysql-server
-          - mysql-client
+      apt:
+         state: latest
+         name:
+            - postgresql14
+            - postgresql14-server
+            - postgresql14-contrib
+            - postgresql14-devel
+            - postgresql14-libs
+            - centos-release-scl
+            - llvm5.0-devel
+            - llvm-toolset-7-clang
 
     - name: pip install mysqlclient
       shell: pip install mysqlclient
