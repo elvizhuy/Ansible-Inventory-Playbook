@@ -27,7 +27,7 @@
       become: yes
 
     - name: start MYSQL service
-      service:
+      systemd:
           name: mysql
           state: started
           enable: yes
