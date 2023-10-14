@@ -105,6 +105,19 @@
           - ::1
           - localhost
 
+#================================================ MIGRATE ====================================================
+    - name: Ensure the database exists
+      mysql_db:
+        name: "{{ mysql_db_name }}"
+        state: present
+      register: database_check
+
+    - name: Run Database Migration Script
+      shell: /var/lib/jenkins/workspace/ Ansible-Inventory-Playbook/migration_script.sh
+      args:
+        executable: /bin/bash
+      when: database_check.changed
+
   handlers:
     - name: Restart mysql
       service:
