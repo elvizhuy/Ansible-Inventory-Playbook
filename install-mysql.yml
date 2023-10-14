@@ -9,16 +9,21 @@
       - vars.yml
 
   tasks:
-    - name: install new MYSQL database
+    - name: Update apt cache
       apt:
-         state: latest
-         name:
-            - python-mysqldb
-            - mysql-server
-            - mysql-client
+         update_cache: yes
 
-    - name: pip install mysqlclient
-      shell: pip install mysqlclient
+    - name: install new MYSQL database
+      package:
+         name: "{{item}}"
+         state: present
+         update_cache: yes
+      loop:
+         - mysql-server
+         - mysql-client
+         - python3-mysqldb
+         - libmysqlclient-dev
+      become: yes
 
     - name: start MYSQL service
       service:
@@ -26,6 +31,27 @@
           state: started
           enable: yes
 #      action: service name=mysql state=started
+
+    - name: Set root user password
+      mysql_user:
+        name: root
+        password: "{{mysql_root_password}}"
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+        host: localhost
+        login_user: root
+        login_password: ''
+        state: present
+
+    - name: create DB user
+      mysql_user:
+          name: "{{ mysql_user }}"
+          password: "{{ mysql_password }}"
+          priv: '*.*:ALL,GRANT'
+          host: '%'
+          append_privs: yes
+          login_user: root
+          login_password: "{{mysql_root_password}}"
+          state: present
 
     - name: Remove the test database
       mysql_db: name=test state=absent
@@ -35,16 +61,33 @@
           name: "{{ mysql_db_name }}"
           state: present
 
-    - name: create DB user
-      mysql_user:
-          name: "{{ mysql_user }}"
-          password: "{{ mysql_password }}"
-          priv: '*.*:ALL,GRANT'
-          state: present
+    - name: Enable remote login to mysql
+      lineinfile:
+          path: /etc/mysql/mysql.conf.d/mysqld.cnf
+          regex: '^bind-address\s*=\s*127.0.0.1'
+          line: 'bind-address = 0.0.0.0'
+          backup: yes
+      notify:
+          - Restart mysql
+
+    - name: Execute MySQL secure installation
+      expect:
+        command: mysql_secure_installation
+        responses:
+          'Enter password for user root:': "{{ root_password }}"
+          'Press y\|Y for Yes, any other key for No': 'Y'
+          'Please enter 0 = LOW, 1 = MEDIUM and 2 = STRONG': "{{ password_validation_policy }}"
+          'Change the password for root \? \(\(Press y\|Y for Yes, any other key for No\)': 'n'
+          'Remove anonymous users\? \(Press y\|Y for Yes, any other key for No\)': 'Y'
+          'Disallow root login remotely\? \(Press y\|Y for Yes, any other key for No\)': 'Y'
+          'Remove test database and access to it\? \(Press y\|Y for Yes, any other key for No\)': 'Y'
+          'Reload privilege tables now\? \(Press y\|Y for Yes, any other key for No\)': 'Y'
+      environment:
+        MYSQL_PWD: "{{ root_password }}"
 
     - name: Ensure anonymous users are not in the database
       mysql_user: user='' host=$item state=absent
-      loop:
+      with_items:
           - 127.0.0.1
           - ::1
           - localhost
@@ -58,3 +101,9 @@
           - 127.0.0.1
           - ::1
           - localhost
+
+  handlers:
+    - name: Restart mysql
+      service:
+          name: mysql
+          state: restarted
