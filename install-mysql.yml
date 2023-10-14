@@ -38,7 +38,7 @@
         name: root
         password: "{{mysql_root_password}}"
         login_unix_socket: /var/run/mysqld/mysqld.sock
-        host: localhost
+        host: jira
         login_user: root
         login_password: ''
         state: present
