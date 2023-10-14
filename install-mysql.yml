@@ -13,8 +13,9 @@
       apt:
          state: latest
          name:
-            - MySQL-python
+            - python-mysqldb
             - mysql-server
+            - mysql-client
 
     - name: pip install mysqlclient
       shell: pip install mysqlclient
