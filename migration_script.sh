@@ -1,17 +1,17 @@
 #! /bin/bash
 
-# Thông tin cơ sở dữ liệu MySQL
+#db info
 db_user="huynn"
-db_password="123123"
+db_password="Huynn@9890#!"
 db_name="test_mysql_db"
 
-# Đường dẫn đến tệp dump
+# path
 dump_file="/home/isofh/dumpdb.sql"
 
-# migrate dữ liệu
+# migrate
 mysql -u $db_user -p$db_password $db_name < $dump_file
 
-# Kiểm tra kết quả
+#check
 if [ $? -eq 0 ]; then
   echo "Migration successful."
 else
