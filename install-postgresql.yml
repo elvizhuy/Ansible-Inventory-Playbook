@@ -32,9 +32,6 @@
         with_items:
           - postgresql
 
-    handlers:
-      - name: restart postgres
-        service: name=postgresql state=restarted
 
 #==================================== Create database,user ====================================
 
@@ -85,3 +82,8 @@
           command: "psql {{ postgresql_db_name }} -c {{ migration_sql }}"
           become_user: postgres
           register: sql_response_variable
+
+#==================================== Restart service ====================================
+  handlers:
+        - name: restart postgres
+          service: name=postgresql state=restarted
