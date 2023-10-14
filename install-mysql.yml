@@ -26,11 +26,11 @@
          - libmysqlclient-dev
       become: yes
 
-    - name: start MYSQL service
-      systemd:
-          name: mysql
-          state: started
-          enable: yes
+#    - name: start MYSQL service
+#      systemd:
+#          name: mysql
+#          state: started
+#          enable: yes
 #      action: service name=mysql state=started
 
     - name: Set root user password
