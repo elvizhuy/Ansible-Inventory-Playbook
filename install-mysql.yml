@@ -30,7 +30,10 @@
       action: service name=mysql state=started
 
     - name: Get root user info
-      command: "mysql -u root -p -e 'SELECT Password FROM mysql.user WHERE User = \"root\";'"
+      mysql_user_info:
+          name: root
+          login_user: root
+          login_password: "123123"
       register: root_user_info
       ignore_errors: yes
 
