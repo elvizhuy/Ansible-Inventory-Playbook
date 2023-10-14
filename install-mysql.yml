@@ -86,7 +86,7 @@
           'Remove test database and access to it\? \(Press y\|Y for Yes, any other key for No\)': 'Y'
           'Reload privilege tables now\? \(Press y\|Y for Yes, any other key for No\)': 'Y'
       environment:
-        MYSQL_PWD: "{{ root_password }}"
+        MYSQL_PWD: "{{ mysql_root_password }}"
 
     - name: Ensure anonymous users are not in the database
       mysql_user: user='' host=$item state=absent
