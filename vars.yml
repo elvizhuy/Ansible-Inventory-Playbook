@@ -1,0 +1,8 @@
+---
+postgresql_user: huynn
+postgresql_password: 123123
+postgresql_db_name: test_postgresql_db
+
+mysql_user: huynn
+mysql_password: 123123
+mysql_db_name: test_mysql_db

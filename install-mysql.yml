@@ -1,6 +1,10 @@
 ---
 - name: Install Mysql
   hosts: database_slave
+
+  vars_files:
+      - vars.yml
+
   tasks:
     - name: install new MYSQL database
       apt:
@@ -18,17 +22,12 @@
 
     - name: create database
       mysql_db:
-          name: "{{ database_name }}"
+          name: "{{ mysql_db_name }}"
           state: present
-      vars:
-          database_name: test_db
 
     - name: create DB user
       mysql_user:
-          name: "{{ username }}"
-          password: "{{ password }}"
+          name: "{{ mysql_user }}"
+          password: "{{ mysql_password }}"
           priv: '*.*:ALL'
           state: present
-      vars:
-          username: 'Huynn'
-          password: '123123'
