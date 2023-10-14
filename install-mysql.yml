@@ -29,16 +29,31 @@
     - name: start MYSQL service
       action: service name=mysql state=started
 
-#    - name: Set root user password
-#      become: yes
-#      mysql_user:
-#           name: root
-#           password: "{{mysql_root_password}}"
-#           login_unix_socket: /var/run/mysqld/mysqld.sock
-#           host: localhost
-#           login_user: root
-#           login_password: "{{ mysql_root_password }}"
-#           state: present
+    - name: Get root user info
+      mysql_user_info:
+        name: root
+        login_user: root
+        login_password: "{{ mysql_root_password }}"
+      register: root_user_info
+
+    - name: Display current root user password
+      debug:
+        var: root_user_info.stdout.password
+
+    - name: Set root user password in a variable
+      set_fact:
+        root_password_variable: "{{ root_user_info.stdout.password }}"
+
+    - name: Set root user password
+      become: yes
+      mysql_user:
+           name: root
+           password: "{{mysql_root_password}}"
+           login_unix_socket: /var/run/mysqld/mysqld.sock
+           host: localhost
+           login_user: root
+           login_password: "{{ root_password_variable }}"
+           state: present
 
     - name: Check if MySQL user exists
       mysql_user:
