@@ -12,7 +12,7 @@
     - name: install new MYSQL database
       apt:
           service: "{{ item }}"
-          state: installed
+          state: present
       with_items:
           - pip
           - python3-dev
