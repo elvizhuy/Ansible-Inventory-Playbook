@@ -80,7 +80,7 @@
       register: mysql_db_check
       ignore_errors: yes
 
-    - name: create database
+    - name: create database if not exists
       mysql_db:
           name: "{{ mysql_db_name }}"
           login_user: root
