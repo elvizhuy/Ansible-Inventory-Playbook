@@ -1,0 +1,22 @@
+---
+- name: Remove Database
+  hosts: database_slave
+  gather_facts: true
+  become: true
+  vars_files:
+        - vars.yml
+
+  tasks:
+     - name: Stop and Disable the Database Service
+       systemd:
+          name: "{{ database_service_to_remove }}"
+          state: stopped
+          enabled: no
+
+#    - name: Remove the Service Configuration File
+#      file:
+#            path: /etc/systemd/system/your_database_service_name.service
+     - name: Remove database
+       apt:
+          name: "{{ database_service_to_remove }}"
+          state: absent
