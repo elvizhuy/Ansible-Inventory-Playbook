@@ -13,7 +13,7 @@
       apt:
           service: "{{ item }}"
           state: installed
-      loop:
+      with_items:
           - pip
           - python3-dev
           - mysql-server
