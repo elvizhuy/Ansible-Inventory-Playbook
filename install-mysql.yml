@@ -133,6 +133,8 @@
 
     - name: Update mysql root password for all root accounts
       mysql_user:
+           login_user: root
+           login_password: "{{mysql_root_password}}"
            name: root
            host: "{{ item }}"
            password: "{{ mysql_root_password }}"
