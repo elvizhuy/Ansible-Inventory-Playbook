@@ -3,7 +3,7 @@ postgresql_user: huynn
 postgresql_password: "HuyNgNg@9890#!"
 postgresql_db_name: test_postgresql_db
 
-mysql_root_password: "HuyNgNg@9890#!"
+mysql_root_password: "Huynn@9890#!"
 mysql_databases: test_mysql_db
 #  - name: test_mysql_db
 mysql_user: huynn
