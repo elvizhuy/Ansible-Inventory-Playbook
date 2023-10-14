@@ -10,9 +10,7 @@
 
   tasks:
     - name: install new MYSQL database
-      apt:
-          service: "{{ item }}"
-          state: present
+      action: apt pkg=$item state=installed
       with_items:
           - pip
           - python3-dev
