@@ -41,7 +41,7 @@
         login_unix_socket: /var/run/mysqld/mysqld.sock
         host: localhost
         login_user: root
-        login_password: ''
+        login_password: "{{ mysql_root_password }}"
         state: present
 
     - name: create DB user
