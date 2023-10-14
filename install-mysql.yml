@@ -13,12 +13,8 @@
       apt:
          state: latest
          name:
-            - mysql-server-core-5.5
-            - mysql-client-core-5.5
-            - libmysqlclient-dev
-            - python-mysqldb
+            - MySQL-python
             - mysql-server
-            - mysql-client
 
     - name: pip install mysqlclient
       shell: pip install mysqlclient
