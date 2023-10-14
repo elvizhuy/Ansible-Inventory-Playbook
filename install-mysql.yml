@@ -1,7 +1,10 @@
 ---
 - name: Install Mysql
   hosts: database_slave
-
+  become: yes
+  module_defaults:
+      mysql:
+        login_unix_socket: /var/run/mysqld/mysqld.sock
   vars_files:
       - vars.yml
 
@@ -11,14 +14,20 @@
           service: "{{ item }}"
           state: installed
       loop:
+          - pip
+          - python3-dev
           - mysql-server
           - mysql-client
+
+    - name: pip install mysqlclient
+      shell: pip install mysqlclient
 
     - name: start MYSQL service
       service:
           name: mysql
           state: started
           enable: yes
+#      action: service name=mysql state=started
 
     - name: create database
       mysql_db:
@@ -29,5 +38,5 @@
       mysql_user:
           name: "{{ mysql_user }}"
           password: "{{ mysql_password }}"
-          priv: '*.*:ALL'
+          priv: '*.*:ALL,GRANT'
           state: present

@@ -3,8 +3,13 @@ postgresql_user: huynn
 postgresql_password: 123123
 postgresql_db_name: test_postgresql_db
 
-mysql_user: huynn
-mysql_password: 123123
-mysql_db_name: test_mysql_db
+mysql_root_password: "123123"
+mysql_databases:
+  - name: test_mysql_db
+mysql_users:
+  - name: huynn
+    host: "%"
+    password: 123123
+    priv: "huynn.*:ALL"
 
 database_service_to_remove : postgresql
