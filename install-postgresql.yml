@@ -115,7 +115,7 @@
         # notify: Restart postgres
 
       - name: Reload PostgreSQL configuration
-        notify: Reload Postgresql
+        shell: systemctl reload postgresql
 
       - name: Set new password for postgres superuser
         postgresql_user:
