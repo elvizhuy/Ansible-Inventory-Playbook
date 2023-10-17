@@ -6,6 +6,32 @@
   vars_files:
       - vars.yml
 
+  handlers:
+    - name: Restart Postgresql
+      systemd:
+        name: postgresql
+        state: restarted
+
+    - name: Reload Postgresql
+      systemd:
+        name: postgresql
+        state: reloaded
+
+    - name: Start Postgresql
+      systemd:
+        name: postgresql
+        state: started
+
+    - name: Stop Postgresql
+      systemd:
+        name: postgresql
+        state: stopped
+
+    - name: Enable Postgresql
+      systemd:
+        name: postgresql
+        enabled: yes
+
   pre_tasks:
       # - name: Add pgdg repo to sources.list.d
       #   lineinfile:
@@ -70,7 +96,7 @@
           regexp: '^listen_addresses\s*='
           line: "listen_addresses='*'"
           state: present
-        notify: Restart Postgresql
+        # notify: Restart Postgresql
 
       - name: Add new configuration to "pg_hba.conf"
         blockinfile:
@@ -86,10 +112,10 @@
 
       - name: Allow peer authentication for the postgres user
         shell: echo 'host all all 0.0.0.0/0 trust' >> /etc/postgresql/14/main/pg_hba.conf
-        notify: Restart postgres
+        # notify: Restart postgres
 
       - name: Reload PostgreSQL configuration
-        shell: systemctl reload postgresql
+        notify: Reload Postgresql
 
       - name: Set new password for postgres superuser
         postgresql_user:
@@ -100,7 +126,7 @@
 
       - name: Remove the added line for peer authentication
         shell: sed -i '$d' /etc/postgresql/14/main/pg_hba.conf
-        notify: Restart postgres
+        notify: Restart Postgresql
 
 #==================================== Create database,user ====================================
 
@@ -128,7 +154,7 @@
           role_attr_flags: CREATEDB,SUPERUSER,CREATEROLE
           encrypted: yes
           state: present
-       
+
 
       - name: "Grant db user access to app db"
         postgresql_privs:
@@ -177,23 +203,4 @@
   # handlers:
   #     - name: restart postgres
   #       service: name=postgresql state=restarted
-  handlers:
-    - name: Restart Postgresql
-      systemd:
-        name: postgresql
-        state: restarted
 
-    - name: Start Postgresql
-      systemd:
-        name: postgresql
-        state: started
-
-    - name: Stop Postgresql
-      systemd:
-        name: postgresql
-        state: stopped
-
-    - name: Enable Postgresql
-      systemd:
-        name: postgresql
-        enabled: yes
