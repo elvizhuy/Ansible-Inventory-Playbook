@@ -82,8 +82,6 @@
 
       - name: Change peer identification to trust
         shell: /bin/sed -i '/^local/s/peer/trust/' /etc/postgresql/14/main/pg_hba.conf
-        args:
-          warn: no
         notify: Restart Postgresql
 
 #==================================== Create database,user ====================================
