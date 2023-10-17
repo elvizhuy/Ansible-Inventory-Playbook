@@ -199,8 +199,4 @@
         shell: psql {{ postgresql_db_name }} < {{ migration_sql }}
         register: sql_response_variable
 
-#==================================== Restart service ====================================
-  # handlers:
-  #     - name: restart postgres
-  #       service: name=postgresql state=restarted
 
