@@ -89,9 +89,9 @@
           users: "{{ postgresql_user }}"
           create: true
         blockinfile:
-               dest: "/var/lib/pgsql/14/data/pg_hba.conf"
-               insertafter: "# TYPE  DATABASE        USER            ADDRESS                 METHOD"
-               block: |
+          dest: "/var/lib/pgsql/14/data/pg_hba.conf"
+          insertafter: "# TYPE  DATABASE        USER            ADDRESS                 METHOD"
+          block: |
                  host   all             all                trust
         become: yes
         become_user: postgres
@@ -101,12 +101,12 @@
 
       - name: "Load SQL script into a variable"
         set_fact:
-            migration_sql: "{{ lookup('file', 'tmp/migration.sql') }}"
+          migration_sql: "{{ lookup('file', 'tmp/migration.sql') }}"
 
       - name: "Execute script from variable"
         become_user: postgres
 #          command: "psql {{ postgresql_db_name }} -c {{ migration_sql }}"
-        shell: psql {{ db_name }} < {{ migration_sql }}
+        shell: psql {{ postgresql_db_name }} < {{ migration_sql }}
         register: sql_response_variable
 
 #==================================== Restart service ====================================
