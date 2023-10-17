@@ -84,14 +84,29 @@
         shell: /bin/sed -i '/^local/s/peer/trust/' /etc/postgresql/14/main/pg_hba.conf
         notify: Restart Postgresql
 
+      - name: Set new password for postgres superuser
+        postgresql_user:
+          db: postgres
+          name: "{{ postgresql_super_user }}"
+          password: "{{ postgresql_super_password }}"
+          encrypted: yes
+
 #==================================== Create database,user ====================================
 
-      - name: "Create app database"
+      - name: Check if app database exists
+        postgresql_db:
+          name: "{{ postgresql_db_name }}"
+          login_user: "{{ postgresql_super_user }}"
+          login_password: "{{ postgresql_super_password }}"
+        register: db_check
+
+      - name: "Create app database if not exists"
         postgresql_db:
           state: present
           name: "{{ postgresql_db_name }}"
-        become: yes
-        become_user: postgres
+        login_user: "{{ postgresql_super_user }}"
+        login_password: "{{ postgresql_super_password }}"
+        when: db_check.changed == false
 
       - name: "Create db user"
         become: yes

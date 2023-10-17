@@ -2,6 +2,8 @@
 postgresql_user: huynn
 postgresql_password: "Huynn@9890#!"
 postgresql_db_name: test_postgresql_db
+postgresql_super_user: postgres
+postgresql_super_password: "Huynn@9890#!"
 
 mysql_root_password: "Huynn@9890#!"
 mysql_databases: test_mysql_db
