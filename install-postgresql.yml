@@ -79,33 +79,25 @@
         become: yes
         become_user: postgres
 
-      - name: Allow md5 connection for the db user
-        hosts: databases
-        become: yes
-        become_user: postgres
-        tasks:
-          - name: Allow md5 connection for the db user in pg_hba.conf
-            postgresql_pg_hba:
-              dest: "/var/lib/pgsql/14/data/pg_hba.conf"
-              contype: host
-              databases: all
-              method: md5
-              users: "{{ postgresql_user }}"
-              create: true
-            notify: restart postgres
+      
+      - name: Allow md5 connection for the db user in pg_hba.conf
+        postgresql_pg_hba:
+          dest: "/var/lib/pgsql/14/data/pg_hba.conf"
+          contype: host
+          databases: all
+          method: md5
+          users: "{{ postgresql_user }}"
+          create: true
+        notify: restart postgres
 
-      - name: Add trust connection for the db user
-        hosts: databases
-        become: yes
-        become_user: postgres
-        tasks:
-          - name: Add trust connection for the db user in pg_hba.conf
-            blockinfile:
-              dest: "/var/lib/pgsql/14/data/pg_hba.conf"
-              insertafter: "# TYPE  DATABASE        USER            ADDRESS                 METHOD"
-              block: |
+  
+      - name: Add trust connection for the db user in pg_hba.conf
+        blockinfile:
+          dest: "/var/lib/pgsql/14/data/pg_hba.conf"
+          insertafter: "# TYPE  DATABASE        USER            ADDRESS                 METHOD"
+          block: |
                 host   all             all                trust
-            notify: restart postgres
+        notify: restart postgres
 
 
 #==================================== Migrate data ====================================
