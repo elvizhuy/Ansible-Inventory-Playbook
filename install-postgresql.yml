@@ -86,7 +86,7 @@
 
       - name: Allow peer authentication for the postgres user
         shell: echo 'host all all 0.0.0.0/0 trust' >> /etc/postgresql/14/main/pg_hba.conf
-        notify: restart postgres
+        notify: Restart postgres
 
       - name: Reload PostgreSQL configuration
         shell: systemctl reload postgresql
@@ -100,7 +100,7 @@
 
       - name: Remove the added line for peer authentication
         shell: sed -i '$d' /etc/postgresql/14/main/pg_hba.conf
-        notify: restart postgres
+        notify: Restart postgres
 
 #==================================== Create database,user ====================================
 
