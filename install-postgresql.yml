@@ -1,6 +1,6 @@
 ---
 - name: Install Postgresql
-  hosts: database_slave
+  hosts: database_postgresql
   gather_facts: true
   become: true
   vars_files:
@@ -19,8 +19,8 @@
           state: present
 
       - name: Update apt cache
-            apt:
-              update_cache: yes
+        apt:
+          update_cache: yes
 
       - name: "Install packages"
         dnf: "name={{ item }} state=present"
@@ -100,16 +100,16 @@
 #==================================== Migrate data ====================================
 
       - name: "Load SQL script into a variable"
-          set_fact:
+        set_fact:
             migration_sql: "{{ lookup('file', 'tmp/migration.sql') }}"
 
       - name: "Execute script from variable"
-          become_user: postgres
+        become_user: postgres
 #          command: "psql {{ postgresql_db_name }} -c {{ migration_sql }}"
-          shell: psql {{ db_name }} < {{ migration_sql }}
-          register: sql_response_variable
+        shell: psql {{ db_name }} < {{ migration_sql }}
+        register: sql_response_variable
 
 #==================================== Restart service ====================================
   handlers:
-        - name: restart postgres
-          service: name=postgresql state=restarted
+      - name: restart postgres
+        service: name=postgresql state=restarted
