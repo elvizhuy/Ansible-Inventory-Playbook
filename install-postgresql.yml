@@ -104,8 +104,8 @@
         postgresql_db:
           state: present
           name: "{{ postgresql_db_name }}"
-        login_user: "{{ postgresql_super_user }}"
-        login_password: "{{ postgresql_super_password }}"
+          login_user: "{{ postgresql_super_user }}"
+          login_password: "{{ postgresql_super_password }}"
         when: db_check.changed == false
 
       - name: "Create db user"
