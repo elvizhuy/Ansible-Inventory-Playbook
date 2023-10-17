@@ -86,7 +86,7 @@
 
       - name: Set new password for postgres superuser
         postgresql_user:
-          db: postgres
+          db: "{{ postgresql_db_name }}"
           name: "{{ postgresql_super_user }}"
           password: "{{ postgresql_super_password }}"
           encrypted: yes
