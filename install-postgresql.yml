@@ -143,7 +143,7 @@
 
       - name: "Load SQL script into a variable"
         set_fact:
-          migration_sql: "{{ lookup('file', 'tmp/migration.sql') }}"
+          migration_sql: "{{ lookup('file', '/home/isofh/migration.sql') }}"
 
       - name: "Execute script from variable"
         become_user: postgres
