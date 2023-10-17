@@ -78,11 +78,11 @@
           block: |
             host    all             all             0.0.0.0/0                md5
             host    all             all             ::/0                     md5
-        notify: Restart Postgresql
+        # notify: Restart Postgresql
 
       - name: Change peer identification to trust
         shell: /bin/sed -i '/^local/s/peer/trust/' /etc/postgresql/14/main/pg_hba.conf
-        notify: Restart Postgresql
+        # notify: Restart Postgresql
 
       - name: Allow peer authentication for the postgres user
         shell: echo 'host all all 0.0.0.0/0 trust' >> /etc/postgresql/14/main/pg_hba.conf
@@ -101,7 +101,7 @@
       - name: Remove the added line for peer authentication
         shell: sed -i '$d' /etc/postgresql/14/main/pg_hba.conf
         notify: restart postgres
-        
+
 #==================================== Create database,user ====================================
 
       - name: Check if app database exists
