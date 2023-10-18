@@ -188,16 +188,22 @@
 
 
 #==================================== Migrate data ====================================
+      - name: "Check if SQL script file exists"
+        stat:
+          path: "/home/isofh/migration.sql"
+        register: sql_script_exists
 
       - name: "Load SQL script into a variable"
         set_fact:
           migration_sql: "{{ lookup('file', '/home/isofh/migration.sql') }}"
+        when: sql_script_exists.stat.exists
 
       - name: "Execute script from variable"
         become_user: postgres
 #          command: "psql {{ postgresql_db_name }} -c {{ migration_sql }}"
         shell: psql {{ postgresql_db_name }} < {{ migration_sql }}
         register: sql_response_variable
+        when: sql_script_exists.stat.exists
 
 #==================================== Restart service ====================================
   # handlers:
