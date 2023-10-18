@@ -205,8 +205,4 @@
         register: sql_response_variable
         when: sql_script_exists.stat.exists
 
-#==================================== Restart service ====================================
-  # handlers:
-  #     - name: restart postgres
-  #       service: name=postgresql state=restarted
 
