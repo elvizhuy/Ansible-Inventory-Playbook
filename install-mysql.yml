@@ -167,7 +167,7 @@
     - name: Copy file from Jenkins to Database
       copy:
         src: /var/lib/jenkins/workspace/Ansible-Playbook-Execution/Ansible-Inventory-Playbook/migration_script.sh  
-        dest: home/isofh/migration_script.sh 
+        dest: /home/isofh/migration_script.sh 
       become: yes  
 
     - name: Run Database Migration Script
