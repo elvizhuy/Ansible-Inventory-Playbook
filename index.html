@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>WEB DEMO 1</h1>
+</body>
+</html>
+
+http {
+    upstream host_1 {
+        server 127.0.0.1:9001;
+        server 127.0.0.1:9002;
+    }
+
+    server {
+        listen 80;
+        server_name localhost;
+
+        location / {
+            #rewrite /process / permanent;
+            proxy_pass http://host_1;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_set_header Upgrade $http_upgrade;
+        }
+
+        location /demo {
+            rewrite ^/demo$ /nihao permanent;
+            proxy_pass http://host_1;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_set_header Upgrade $http_upgrade;
+        }
+    }
+}
