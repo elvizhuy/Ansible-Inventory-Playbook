@@ -16,3 +16,6 @@ mysql_user: huynn
 mysql_password: "Huynn@9890#!"
 password_validation_policy: 1
 database_service_to_remove : postgresql
+
+ansible_user: ""
+path_sshkey_rsa_pub: "~/.ssh/id_rsa.pub"
