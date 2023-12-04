@@ -70,7 +70,7 @@
 
       - name: Install postgresql
         apt:
-          name: postgresql-14
+          name: postgresql-16
           update_cache: yes
         notify:
           - Enable Postgresql
