@@ -1,6 +1,6 @@
 ---
 - name: Install Postgresql
-  hosts: database_postgresql
+  hosts: server_test
   gather_facts: true
   become: true
   vars_files:
@@ -92,7 +92,7 @@
 
       - name: Ensure PostgreSQL is listening on *
         lineinfile:
-          dest: /etc/postgresql/14/main/postgresql.conf
+          dest: /etc/postgresql/16/main/postgresql.conf
           regexp: '^listen_addresses\s*='
           line: "listen_addresses='*'"
           state: present
@@ -100,18 +100,18 @@
 
       - name: Add new configuration to "pg_hba.conf"
         blockinfile:
-          dest: /etc/postgresql/14/main/pg_hba.conf
+          dest: /etc/postgresql/16/main/pg_hba.conf
           block: |
             host    all             all             0.0.0.0/0                md5
             host    all             all             ::/0                     md5
         # notify: Restart Postgresql
 
       - name: Change peer identification to trust
-        shell: /bin/sed -i '/^local/s/peer/trust/' /etc/postgresql/14/main/pg_hba.conf
+        shell: /bin/sed -i '/^local/s/peer/trust/' /etc/postgresql/16/main/pg_hba.conf
         # notify: Restart Postgresql
 
       - name: Allow peer authentication for the postgres user
-        shell: echo 'host all all 0.0.0.0/0 trust' >> /etc/postgresql/14/main/pg_hba.conf
+        shell: echo 'host all all 0.0.0.0/0 trust' >> /etc/postgresql/16/main/pg_hba.conf
         # notify: Restart postgres
 
       - name: Reload PostgreSQL configuration
@@ -125,7 +125,7 @@
           encrypted: yes
 
       - name: Remove the added line for peer authentication
-        shell: sed -i '$d' /etc/postgresql/14/main/pg_hba.conf
+        shell: sed -i '$d' /etc/postgresql/16/main/pg_hba.conf
         notify: Restart Postgresql
 
 #==================================== Create database,user ====================================
@@ -188,21 +188,21 @@
 
 
 #==================================== Migrate data ====================================
-      - name: "Check if SQL script file exists"
-        stat:
-          path: "/home/isofh/migration.sql"
-        register: sql_script_exists
+#       - name: "Check if SQL script file exists"
+#         stat:
+#           path: "/home/isofh/migration.sql"
+#         register: sql_script_exists
 
-      - name: "Load SQL script into a variable"
-        set_fact:
-          migration_sql: "{{ lookup('file', '/home/isofh/migration.sql') }}"
-        when: sql_script_exists.stat.exists
+#       - name: "Load SQL script into a variable"
+#         set_fact:
+#           migration_sql: "{{ lookup('file', '/home/isofh/migration.sql') }}"
+#         when: sql_script_exists.stat.exists
 
-      - name: "Execute script from variable"
-        become_user: postgres
-#          command: "psql {{ postgresql_db_name }} -c {{ migration_sql }}"
-        shell: psql {{ postgresql_db_name }} < {{ migration_sql }}
-        register: sql_response_variable
-        when: sql_script_exists.stat.exists
+#       - name: "Execute script from variable"
+#         become_user: postgres
+# #          command: "psql {{ postgresql_db_name }} -c {{ migration_sql }}"
+#         shell: psql {{ postgresql_db_name }} < {{ migration_sql }}
+#         register: sql_response_variable
+#         when: sql_script_exists.stat.exists
 
 
