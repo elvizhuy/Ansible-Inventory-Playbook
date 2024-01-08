@@ -1,6 +1,6 @@
 ---
 - name: Install & Secure Mysql
-  hosts: database_slave
+  hosts: databases
   become: yes
   gather_facts: true
 #  module_defaults:
