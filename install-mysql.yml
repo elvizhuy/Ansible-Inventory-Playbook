@@ -59,9 +59,9 @@
 
     - name: Check if MySQL user exists
       mysql_user:
-           name: "{{ mysql_user }}"
-           login_user: root
-           login_password: "{{ mysql_root_password }}"
+          name: "{{ mysql_user }}"
+          login_user: root
+          login_password: "{{ mysql_root_password }}"
       register: mysql_user_check
       ignore_errors: yes
 
