@@ -1,6 +1,0 @@
-- hosts: database
-  roles:
-    - role: role-mysql
-      become: yes
-  # vars_files:
-  #   - /role-mysqldb/vars/*.yml

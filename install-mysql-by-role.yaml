@@ -1,0 +1,9 @@
+- hosts: database
+  roles:
+    - role: role-mysql
+      become: yes
+  vars_files:
+    - role-mysql/vars/Archlinux.yml
+    - role-mysql/vars/Debian.yml
+    - role-mysql/vars/RedHat-6.yml
+    - role-mysql/vars/RedHat-7.yml
