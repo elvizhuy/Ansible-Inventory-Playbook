@@ -3,4 +3,4 @@
     - role: role-mysql
       become: yes
   vars_files:
-    - vars/*.yml
+    - /role-mysqldb/vars/*.yml
