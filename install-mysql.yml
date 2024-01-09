@@ -7,7 +7,7 @@
 #      mysql:
 #        login_unix_socket: /var/run/mysqld/mysqld.sock
   vars_files:
-      - vars.yml
+    - vars.yml
 
   tasks:
     - name: Update apt cache
@@ -48,7 +48,7 @@
 
     - name: Set root user password
       become: yes
-      mysql_user:
+      community.mysql.mysql_user:
           name: root
           password: "{{mysql_root_password}}"
           login_unix_socket: /var/run/mysqld/mysqld.sock
@@ -58,7 +58,7 @@
           state: present
 
     - name: Check if MySQL user exists
-      mysql_user:
+      community.mysql.mysql_user:
           name: "{{ mysql_user }}"
           login_user: root
           login_password: "{{ mysql_root_password }}"
@@ -66,7 +66,7 @@
       ignore_errors: yes
 
     - name: create DB user if not exists
-      mysql_user:
+      community.mysql.mysql_user:
            name: "{{ mysql_user }}"
            password: "{{ mysql_password }}"
            priv: "*.*:ALL,GRANT"
